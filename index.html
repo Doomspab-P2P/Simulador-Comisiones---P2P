@@ -81,7 +81,7 @@
                         
                         <p class="mb-2"><span class="text-white font-semibold">1. Tu Venta Inicial:</span> Vendes 1.000 USDT a una tasa de <strong>608,99 Bs</strong>. Recibes 608.990 Bs en tu banco.</p>
                         
-                        <p class="mb-2"><span class="text-white font-semibold">2. La Brecha Obligatoria:</span> Si el exchange te cobra 0.50% de comisión y tú quieres ganar un 1.00% limpio, necesitas asegurar una diferencia de precio (brecha) del <strong>1.50%</strong>.</p>
+                        <p class="mb-2"><span class="text-white font-semibold">2. La Brecha Obligatoria:</span> Si la suma de tus comisiones (Ej: 0.25% Venta + 0.25% Compra) es 0.50% y tú quieres ganar un 1.00% limpio, necesitas asegurar una diferencia de precio (brecha) del <strong>1.50%</strong>.</p>
                         
                         <p class="mb-2"><span class="text-white font-semibold">3. El Multiplicador:</span> Para hacer el cálculo fácil, le restamos esa brecha (1.50%) al 100%. Así obtenemos tu multiplicador mágico: <strong>0.985</strong>.</p>
 
@@ -90,7 +90,7 @@
                             <p class="font-mono text-white text-sm md:text-base">608,99 <span class="text-slate-500 text-xs">(Venta)</span> × 0.985 <span class="text-slate-500 text-xs">(Multiplicador)</span> = <span class="text-emerald-400 font-bold">599,85 Bs</span></p>
                         </div>
                         
-                        <p class="mt-3 text-slate-400 text-xs leading-relaxed"><strong>Conclusión:</strong> La calculadora hace esto automáticamente. Te dice que si recompras tus USDT a <strong>599,85 Bs</strong> o más barato, tu 1% de ganancia (10 USDT) estará 100% garantizado, libre de comisiones.</p>
+                        <p class="mt-3 text-slate-400 text-xs leading-relaxed"><strong>Conclusión:</strong> La calculadora hace esto automáticamente. Te dice que si recompras tus USDT a <strong>599,85 Bs</strong> o más barato, tu 1% de ganancia estará 100% garantizado.</p>
                     </div>
                 </div>
             </div>
@@ -103,11 +103,11 @@
                 <ul class="space-y-4 text-sm text-slate-300">
                     <li class="flex items-start">
                         <span class="text-blue-400 font-bold mr-2">1.</span>
-                        <span><strong class="text-white block mb-0.5">Define tu Tasa y Costos:</strong> Pon a qué precio puedes vender tus USDT hoy y cuánto te cobrarán los exchanges en total (Ej: Si Binance te cobra 0.25% por vender y 0.25% por comprar, colocas <strong>0.50</strong>).</span>
+                        <span><strong class="text-white block mb-0.5">Define Tasa y Comisiones Asimétricas:</strong> Pon a qué precio puedes vender. Luego, pon la comisión exacta de cada lado. Ej: Si Vendes en Binance y Compras en Bybit, pon <strong>0.25</strong> en Venta y <strong>0</strong> en Compra.</span>
                     </li>
                     <li class="flex items-start">
                         <span class="text-blue-400 font-bold mr-2">2.</span>
-                        <span><strong class="text-white block mb-0.5">Revisa la Tabla de Techos:</strong> Ese recuadro te dirá el precio máximo absoluto que debes pagar en el mercado.</span>
+                        <span><strong class="text-white block mb-0.5">Revisa la Tabla de Techos:</strong> Ese recuadro te dirá el precio máximo absoluto que debes pagar en el mercado según tu meta de ganancia.</span>
                     </li>
                     <li class="flex items-start">
                         <span class="text-blue-400 font-bold mr-2">3.</span>
@@ -137,11 +137,11 @@
             }
         });
 
-        // CONFIGURACIÓN DE MERCADOS (Restaurado a Comisión Total Única)
+        // CONFIGURACIÓN DE MERCADOS (Comisiones Asimétricas)
         const mercados = [
-            { id: 'ves', nombre: 'USDT / VES', simbolo: 'Bs.', color: 'emerald', defaultVenta: 608.99, defaultComTotal: 0.50, decimales: 2, logoTexto: '₮', logoColor: 'bg-[#26A17B]' },
-            { id: 'zinli', nombre: 'USDT / ZINLI', simbolo: '$', color: 'blue', defaultVenta: 1.193, defaultComTotal: 0.70, decimales: 3, logoTexto: 'Z', logoColor: 'bg-purple-600' },
-            { id: 'wally', nombre: 'USDT / WALLY', simbolo: '$', color: 'purple', defaultVenta: 1.193, defaultComTotal: 0.70, decimales: 3, logoTexto: 'W', logoColor: 'bg-pink-500' }
+            { id: 'ves', nombre: 'USDT / VES', simbolo: 'Bs.', color: 'emerald', defaultVenta: 608.99, defaultComVenta: 0.25, defaultComCompra: 0.25, decimales: 2, logoTexto: '₮', logoColor: 'bg-[#26A17B]' },
+            { id: 'zinli', nombre: 'USDT / ZINLI', simbolo: '$', color: 'blue', defaultVenta: 1.193, defaultComVenta: 0.35, defaultComCompra: 0.35, decimales: 3, logoTexto: 'Z', logoColor: 'bg-purple-600' },
+            { id: 'wally', nombre: 'USDT / WALLY', simbolo: '$', color: 'purple', defaultVenta: 1.193, defaultComVenta: 0.35, defaultComCompra: 0.35, decimales: 3, logoTexto: 'W', logoColor: 'bg-pink-500' }
         ];
 
         const escalasGanancia = [2.0, 1.8, 1.5, 1.0, 0.8, 0.5, 0.3];
@@ -172,12 +172,21 @@
                             </div>
                         </div>
 
-                        <!-- COMISIÓN TOTAL UNIFICADA -->
-                        <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 focus-within:border-slate-500 transition-all shadow-inner">
-                            <label class="text-[9px] text-slate-400 uppercase font-bold block mb-1">2. Comisión Total % (Ida y Vuelta)</label>
-                            <div class="flex items-center">
-                                <input type="number" id="${m.id}Comision" value="${m.defaultComTotal}" step="any" class="bg-transparent text-white font-mono w-full text-xl focus:outline-none placeholder-slate-600" oninput="calcularMercado('${m.id}')">
-                                <span class="text-slate-500 text-sm ml-2">%</span>
+                        <!-- COMISIONES ASIMÉTRICAS -->
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800 focus-within:border-slate-500 transition-all shadow-inner">
+                                <label class="text-[8px] text-slate-400 uppercase font-bold block mb-1">Com. Venta (Ej: Binance)</label>
+                                <div class="flex items-center">
+                                    <input type="number" id="${m.id}ComVenta" value="${m.defaultComVenta}" step="any" class="bg-transparent text-white font-mono w-full text-center text-sm focus:outline-none placeholder-slate-600" oninput="calcularMercado('${m.id}')">
+                                    <span class="text-slate-500 text-[10px]">%</span>
+                                </div>
+                            </div>
+                            <div class="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800 focus-within:border-slate-500 transition-all shadow-inner">
+                                <label class="text-[8px] text-slate-400 uppercase font-bold block mb-1">Com. Compra (Ej: Bybit)</label>
+                                <div class="flex items-center">
+                                    <input type="number" id="${m.id}ComCompra" value="${m.defaultComCompra}" step="any" class="bg-transparent text-white font-mono w-full text-center text-sm focus:outline-none placeholder-slate-600" oninput="calcularMercado('${m.id}')">
+                                    <span class="text-slate-500 text-[10px]">%</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -216,7 +225,7 @@
                                 <input type="number" id="${m.id}SimCompra" class="bg-transparent w-full text-white font-mono text-sm focus:outline-none" placeholder="Tasa..." oninput="calcularMercado('${m.id}')">
                             </div>
                         </div>
-                        <div id="${m.id}SimResult" class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-[10px] md:text-xs font-mono space-y-1.5 text-slate-300 shadow-inner min-h-[130px] flex flex-col justify-center">
+                        <div id="${m.id}SimResult" class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-[10px] md:text-xs font-mono space-y-1.5 text-slate-300 shadow-inner min-h-[140px] flex flex-col justify-center">
                             <!-- Resultados Simulación -->
                         </div>
                     </div>
@@ -231,11 +240,15 @@
         function calcularMercado(idMercado) {
             const mercado = mercados.find(m => m.id === idMercado);
             const venta = parseFloat(document.getElementById(`${idMercado}Venta`).value) || 0;
-            const comisionTotal = parseFloat(document.getElementById(`${idMercado}Comision`).value) || 0;
+            const comVenta = parseFloat(document.getElementById(`${idMercado}ComVenta`).value) || 0;
+            const comCompra = parseFloat(document.getElementById(`${idMercado}ComCompra`).value) || 0;
+            
+            // La comisión total es la suma de ambas
+            const comisionTotal = comVenta + comCompra;
             
             const tbody = document.getElementById(`${idMercado}Tiers`);
             
-            // 1. RENDERIZAR TABLA DE TECHOS (Matemática Original Exacta)
+            // 1. RENDERIZAR TABLA DE TECHOS
             let filas = '';
             escalasGanancia.forEach((ganancia) => {
                 const brecha = comisionTotal + ganancia;
@@ -259,7 +272,7 @@
             });
             tbody.innerHTML = filas;
 
-            // 2. RENDERIZAR SIMULACIÓN REAL RESTAURADA
+            // 2. RENDERIZAR SIMULACIÓN REAL ASIMÉTRICA
             const montoUSDT = parseFloat(document.getElementById(`${idMercado}SimMonto`).value) || 0;
             const inputCompra = document.getElementById(`${idMercado}SimCompra`);
             const precioCompra = parseFloat(inputCompra.value) || 0;
@@ -274,26 +287,27 @@
                 const fiatRecibido = montoUSDT * venta;
                 const usdtRecompradosBrutos = fiatRecibido / precioCompra;
                 
-                // Se divide la comisión total entre las dos operaciones
-                const comisionMitad = comisionTotal / 2;
-                const usdtCobradosVenta = (montoUSDT * comisionMitad) / 100;
-                const usdtCobradosCompra = (usdtRecompradosBrutos * comisionMitad) / 100;
+                // Cálculos asimétricos exactos
+                const usdtCobradosVenta = (montoUSDT * comVenta) / 100;
+                const usdtCobradosCompra = (usdtRecompradosBrutos * comCompra) / 100;
                 
                 const inversionInicialReal = montoUSDT + usdtCobradosVenta;
                 const usdtNetosFinales = usdtRecompradosBrutos - usdtCobradosCompra;
                 
                 const gananciaUSDT = usdtNetosFinales - inversionInicialReal;
                 
-                // Rentabilidad calculada sobre tu capital enviado para evitar distorsiones visuales
+                // Rentabilidad calculada sobre el capital base
                 const rentabilidadReal = (gananciaUSDT / montoUSDT) * 100;
 
                 const colorGanancia = gananciaUSDT > 0 ? `text-${mercado.color}-400` : 'text-rose-500';
                 const signo = gananciaUSDT > 0 ? '+' : '';
 
                 divSimResult.innerHTML = `
-                    <div class="flex justify-between"><span>1. Vendes ${montoUSDT} USDT:</span> <span class="text-white">+ ${mercado.simbolo}${fiatRecibido.toLocaleString('en-US', {minimumFractionDigits: mercado.decimales, maximumFractionDigits: mercado.decimales})}</span></div>
-                    <div class="flex justify-between"><span>2. Recompras a ${precioCompra}:</span> <span class="text-white">${usdtRecompradosBrutos.toFixed(2)} USDT</span></div>
-                    <div class="flex justify-between text-slate-500 mt-1"><span>- Comisiones (${comisionTotal}% total):</span> <span>- ${(usdtCobradosVenta + usdtCobradosCompra).toFixed(2)} USDT</span></div>
+                    <div class="flex justify-between"><span>Vendes ${montoUSDT} USDT:</span> <span class="text-white">+ ${mercado.simbolo}${fiatRecibido.toLocaleString('en-US', {minimumFractionDigits: mercado.decimales, maximumFractionDigits: mercado.decimales})}</span></div>
+                    <div class="flex justify-between text-slate-500"><span>↳ Fee Venta (${comVenta}%):</span> <span>- ${usdtCobradosVenta.toFixed(2)} USDT</span></div>
+                    <div class="my-1 border-t border-slate-800 border-dashed"></div>
+                    <div class="flex justify-between"><span>Compras a ${precioCompra}:</span> <span class="text-white">${usdtRecompradosBrutos.toFixed(2)} USDT</span></div>
+                    <div class="flex justify-between text-slate-500"><span>↳ Fee Compra (${comCompra}%):</span> <span>- ${usdtCobradosCompra.toFixed(2)} USDT</span></div>
                     <div class="my-1 border-t border-slate-700"></div>
                     <div class="flex justify-between font-bold ${colorGanancia} text-xs mt-1"><span>GANANCIA NETA:</span> <span>${signo}${gananciaUSDT.toFixed(2)} USDT</span></div>
                     <div class="flex justify-between ${colorGanancia} text-[9px] mt-0.5 opacity-80"><span>RENTABILIDAD:</span> <span>${signo}${rentabilidadReal.toFixed(2)}%</span></div>
@@ -313,4 +327,4 @@
         document.addEventListener('DOMContentLoaded', inicializarUI);
     </script>
 </body>
-</html>
+</html>    
