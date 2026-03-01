@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Simulador de Comisiones Arbitraje P2P</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* PROTECCIÓN Y DISEÑO PREMIUM */
+        body { 
+            font-family: 'Inter', sans-serif; 
+            /* Evita selección de texto para evitar copias */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            /* Suaviza el scroll en móviles */
+            -webkit-overflow-scrolling: touch;
+        }
+        .glass-panel { 
+            background: rgba(15, 23, 42, 0.8); 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .tier-row:hover { background: rgba(255, 255, 255, 0.05); }
+        /* Ocultar flechas en los inputs numéricos */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<!-- oncontextmenu="return false;" bloquea el clic derecho -->
+<body class="bg-slate-950 text-slate-200 min-h-screen p-3 md:p-8" oncontextmenu="return false;">
+    
+    <div class="max-w-7xl mx-auto space-y-6 md:space-y-8">
+        
+        <!-- HEADER & LOGOS (Optimizado para móvil) -->
+        <header class="flex flex-col md:flex-row justify-between items-center border-b border-slate-800 pb-4 gap-4 text-center md:text-left">
+            <div>
+                <h1 class="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-blue-500 tracking-tight">
+                    Matriz de Arbitraje P2P
+                </h1>
+                <p class="text-slate-400 text-xs md:text-sm mt-1 uppercase tracking-widest font-semibold">Simulador Avanzado y Techos de Compra</p>
+            </div>
+            
+            <!-- Mini Logos Exchanges -->
+            <div class="flex items-center space-x-2 bg-slate-900/80 px-3 py-2 rounded-full border border-slate-800 shadow-inner">
+                <span class="text-[10px] text-slate-500 font-bold uppercase mr-1">Operadores:</span>
+                <div class="w-5 h-5 bg-[#FCD535] rounded-full text-slate-900 flex items-center justify-center font-bold text-[8px]" title="Binance">BN</div>
+                <div class="w-5 h-5 bg-black border border-[#FFB11A] text-[#FFB11A] rounded-full flex items-center justify-center font-bold text-[8px]" title="Bybit">BY</div>
+                <div class="w-5 h-5 bg-[#00f0ff] rounded-full text-slate-900 flex items-center justify-center font-bold text-[8px]" title="Bitget">BG</div>
+                <div class="w-5 h-5 bg-[#003BFF] rounded-full text-white flex items-center justify-center font-bold text-[8px]" title="BingX">BX</div>
+            </div>
+        </header>
+
+        <!-- MAIN GRID: CALCULADORAS -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 md:gap-6" id="mercados-container">
+            <!-- Renderizado dinámico -->
+        </div>
+
+        <!-- ESTRATEGIA Y MATEMÁTICA SIMPLIFICADA -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 mt-8">
+            <div class="glass-panel border border-slate-800 rounded-2xl p-5 md:p-6 shadow-xl">
+                <div class="flex items-center space-x-3 mb-4 text-emerald-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <h3 class="text-lg font-bold">¿Cómo Funciona la Matemática P2P?</h3>
+                </div>
+                <div class="space-y-3 text-sm text-slate-300">
+                    <p>El secreto del arbitraje profesional es <strong>vender primero y precalcular matemáticamente hasta qué precio puedes recomprar.</strong></p>
+                    
+                    <div class="bg-slate-900 p-4 rounded-lg border border-slate-800 mt-2 text-xs md:text-sm">
+                        <p class="text-emerald-400 font-bold mb-3">📊 EJEMPLO: ¿CÓMO GANAR 1% EXACTO?</p>
+                        
+                        <p class="mb-2"><span class="text-white font-semibold">1. Tu Venta Inicial:</span> Vendes 1.000 USDT a una tasa de <strong>608,99 Bs</strong>. Recibes 608.990 Bs en tu banco.</p>
+                        
+                        <p class="mb-2"><span class="text-white font-semibold">2. La Brecha Obligatoria:</span> Si el exchange te cobra 0.50% de comisión y tú quieres ganar un 1.00% limpio, necesitas asegurar una diferencia de precio (brecha) del <strong>1.50%</strong>.</p>
+                        
+                        <p class="mb-2"><span class="text-white font-semibold">3. El Multiplicador:</span> Para hacer el cálculo fácil, le restamos esa brecha (1.50%) al 100%. Así obtenemos tu multiplicador mágico: <strong>0.985</strong>.</p>
+
+                        <div class="mt-3 bg-slate-950 p-3 rounded border border-slate-700 shadow-inner">
+                            <p class="text-rose-400 font-semibold mb-1 text-[10px] uppercase tracking-wider">Cálculo de tu Techo de Compra:</p>
+                            <p class="font-mono text-white text-sm md:text-base">608,99 <span class="text-slate-500 text-xs">(Venta)</span> × 0.985 <span class="text-slate-500 text-xs">(Multiplicador)</span> = <span class="text-emerald-400 font-bold">599,85 Bs</span></p>
+                        </div>
+                        
+                        <p class="mt-3 text-slate-400 text-xs leading-relaxed"><strong>Conclusión:</strong> La calculadora hace esto automáticamente. Te dice que si recompras tus USDT a <strong>599,85 Bs</strong> o más barato, tu 1% de ganancia (10 USDT) estará 100% garantizado, libre de comisiones.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel border border-slate-800 rounded-2xl p-5 md:p-6 shadow-xl">
+                <div class="flex items-center space-x-3 mb-4 text-blue-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    <h3 class="text-lg font-bold">Guía de Operación Rápida</h3>
+                </div>
+                <ul class="space-y-4 text-sm text-slate-300">
+                    <li class="flex items-start">
+                        <span class="text-blue-400 font-bold mr-2">1.</span>
+                        <span><strong class="text-white block mb-0.5">Define tu Tasa y Costos:</strong> Pon a qué precio puedes vender tus USDT hoy y cuánto te cobrarán los exchanges en total (Ej: Si Binance te cobra 0.25% por vender y 0.25% por comprar, colocas <strong>0.50</strong>).</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-400 font-bold mr-2">2.</span>
+                        <span><strong class="text-white block mb-0.5">Revisa la Tabla de Techos:</strong> Ese recuadro te dirá el precio máximo absoluto que debes pagar en el mercado.</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-400 font-bold mr-2">3.</span>
+                        <span><strong class="text-rose-400 block mb-0.5">Regla de Oro:</strong> Abre el mercado P2P. Si los vendedores están ofreciendo los USDT más caros que tu Techo de Compra, <span class="underline">CIERRA LA OPERACIÓN</span>. Estarías trabajando de gratis o a pérdida.</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-400 font-bold mr-2">4.</span>
+                        <span><strong class="text-white block mb-0.5">Haz la Prueba Final:</strong> Antes de transferir un solo bolívar, pon el precio real del mercado en el <em>Simulador</em> de abajo y verifica visualmente cuántos USDT netos te van a quedar al final.</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        
+        <footer class="text-center text-[10px] text-slate-600 pt-4 pb-8">
+            &copy; 2026 Sistema de Arbitraje P2P. Propiedad exclusiva.
+        </footer>
+    </div>
+
+    <!-- SCRIPT PRINCIPAL DE LA APLICACIÓN -->
+    <script>
+        // ESCUDO ANTIRROBO BÁSICO
+        document.addEventListener('keydown', function(e) {
+            // Bloquea F12, Ctrl+Shift+I, Ctrl+U
+            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73) || (e.ctrlKey && e.keyCode == 85)) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // CONFIGURACIÓN DE MERCADOS (Restaurado a Comisión Total Única)
+        const mercados = [
+            { id: 'ves', nombre: 'USDT / VES', simbolo: 'Bs.', color: 'emerald', defaultVenta: 608.99, defaultComTotal: 0.50, decimales: 2, logoTexto: '₮', logoColor: 'bg-[#26A17B]' },
+            { id: 'zinli', nombre: 'USDT / ZINLI', simbolo: '$', color: 'blue', defaultVenta: 1.193, defaultComTotal: 0.70, decimales: 3, logoTexto: 'Z', logoColor: 'bg-purple-600' },
+            { id: 'wally', nombre: 'USDT / WALLY', simbolo: '$', color: 'purple', defaultVenta: 1.193, defaultComTotal: 0.70, decimales: 3, logoTexto: 'W', logoColor: 'bg-pink-500' }
+        ];
+
+        const escalasGanancia = [2.0, 1.8, 1.5, 1.0, 0.8, 0.5, 0.3];
+
+        function inicializarUI() {
+            const container = document.getElementById('mercados-container');
+            let html = '';
+
+            mercados.forEach(m => {
+                html += `
+                <div class="glass-panel border border-slate-800 rounded-[20px] p-4 md:p-5 shadow-2xl flex flex-col relative overflow-hidden">
+                    <div class="absolute -top-12 -right-12 w-32 h-32 bg-${m.color}-500 opacity-10 rounded-full blur-3xl pointer-events-none"></div>
+                    
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-8 h-8 rounded-full ${m.logoColor} text-white flex items-center justify-center font-bold text-sm shadow-lg border border-white/10">
+                            ${m.logoTexto}
+                        </div>
+                        <h2 class="text-xl font-bold text-${m.color}-400 tracking-tight">${m.nombre}</h2>
+                    </div>
+
+                    <div class="space-y-3 mb-5">
+                        <!-- TASA DE VENTA -->
+                        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-700 focus-within:border-${m.color}-500 transition-all shadow-inner">
+                            <label class="block text-[9px] text-slate-400 uppercase tracking-widest mb-1 font-bold">1. Vendes USDT a:</label>
+                            <div class="flex items-center">
+                                <span class="text-slate-500 mr-2 font-mono text-lg">${m.simbolo}</span>
+                                <input type="number" id="${m.id}Venta" value="${m.defaultVenta}" step="any" class="bg-transparent text-2xl font-bold text-white w-full focus:outline-none placeholder-slate-600" oninput="calcularMercado('${m.id}')">
+                            </div>
+                        </div>
+
+                        <!-- COMISIÓN TOTAL UNIFICADA -->
+                        <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 focus-within:border-slate-500 transition-all shadow-inner">
+                            <label class="text-[9px] text-slate-400 uppercase font-bold block mb-1">2. Comisión Total % (Ida y Vuelta)</label>
+                            <div class="flex items-center">
+                                <input type="number" id="${m.id}Comision" value="${m.defaultComTotal}" step="any" class="bg-transparent text-white font-mono w-full text-xl focus:outline-none placeholder-slate-600" oninput="calcularMercado('${m.id}')">
+                                <span class="text-slate-500 text-sm ml-2">%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TABLA DE TECHOS -->
+                    <div class="flex-grow">
+                        <h3 class="text-[10px] font-bold text-slate-400 mb-2 uppercase tracking-widest flex items-center">
+                            <svg class="w-3 h-3 mr-1 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            Tus Techos de Compra
+                        </h3>
+                        <div class="bg-slate-900/80 rounded-xl border border-slate-800 overflow-hidden shadow-inner">
+                            <table class="w-full text-left">
+                                <thead class="bg-slate-800/50 text-[9px] uppercase text-slate-500">
+                                    <tr>
+                                        <th class="py-2 px-3 font-bold">Meta Neta</th>
+                                        <th class="py-2 px-3 text-right font-bold text-rose-400">Pagar Máximo</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="${m.id}Tiers" class="text-xs">
+                                    <!-- Generado por JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- SIMULADOR VISUAL REAL RESTAURADO -->
+                    <div class="mt-5 pt-4 border-t border-slate-800">
+                        <h3 class="text-[10px] font-bold text-${m.color}-400 mb-2.5 uppercase tracking-widest">Simulador de Mercado</h3>
+                        <div class="space-y-2 mb-3">
+                            <div class="flex items-center bg-slate-900/50 border border-slate-800 rounded-lg p-1.5 focus-within:border-${m.color}-500/50">
+                                <span class="text-[9px] text-slate-500 font-bold w-16 uppercase pl-1">Capital:</span>
+                                <input type="number" id="${m.id}SimMonto" value="100" class="bg-transparent w-full text-white font-mono text-sm focus:outline-none" placeholder="USDT" oninput="calcularMercado('${m.id}')">
+                            </div>
+                            <div class="flex items-center bg-slate-900/50 border border-slate-800 rounded-lg p-1.5 focus-within:border-rose-500/50">
+                                <span class="text-[9px] text-slate-500 font-bold w-16 uppercase pl-1 text-rose-400/70">Recompras a:</span>
+                                <input type="number" id="${m.id}SimCompra" class="bg-transparent w-full text-white font-mono text-sm focus:outline-none" placeholder="Tasa..." oninput="calcularMercado('${m.id}')">
+                            </div>
+                        </div>
+                        <div id="${m.id}SimResult" class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-[10px] md:text-xs font-mono space-y-1.5 text-slate-300 shadow-inner min-h-[130px] flex flex-col justify-center">
+                            <!-- Resultados Simulación -->
+                        </div>
+                    </div>
+                </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            actualizarTodo();
+        }
+
+        function calcularMercado(idMercado) {
+            const mercado = mercados.find(m => m.id === idMercado);
+            const venta = parseFloat(document.getElementById(`${idMercado}Venta`).value) || 0;
+            const comisionTotal = parseFloat(document.getElementById(`${idMercado}Comision`).value) || 0;
+            
+            const tbody = document.getElementById(`${idMercado}Tiers`);
+            
+            // 1. RENDERIZAR TABLA DE TECHOS (Matemática Original Exacta)
+            let filas = '';
+            escalasGanancia.forEach((ganancia) => {
+                const brecha = comisionTotal + ganancia;
+                const multiplicador = (100 - brecha) / 100;
+                const techo = (venta * multiplicador).toFixed(mercado.decimales);
+                
+                let textColor = 'text-slate-400';
+                let bgClass = 'tier-row border-b border-slate-800/30';
+                if(ganancia === 1.0) { textColor = `text-${mercado.color}-400 font-bold`; bgClass += ` bg-${mercado.color}-500/10`; }
+                if(ganancia === 0.3) { textColor = 'text-amber-400 font-bold'; }
+
+                filas += `
+                <tr class="${bgClass}">
+                    <td class="py-2 px-3">
+                        <span class="${textColor}">${ganancia.toFixed(1)}%</span>
+                    </td>
+                    <td class="py-2 px-3 text-right">
+                        <span class="font-mono ${textColor}">${techo}</span>
+                    </td>
+                </tr>`;
+            });
+            tbody.innerHTML = filas;
+
+            // 2. RENDERIZAR SIMULACIÓN REAL RESTAURADA
+            const montoUSDT = parseFloat(document.getElementById(`${idMercado}SimMonto`).value) || 0;
+            const inputCompra = document.getElementById(`${idMercado}SimCompra`);
+            const precioCompra = parseFloat(inputCompra.value) || 0;
+            const divSimResult = document.getElementById(`${idMercado}SimResult`);
+
+            const techoIdealMuestra = (venta * ((100 - (comisionTotal + 1.0)) / 100)).toFixed(mercado.decimales);
+            inputCompra.placeholder = `Ej: ${techoIdealMuestra}`;
+
+            if(venta > 0 && montoUSDT > 0 && precioCompra > 0) {
+                
+                // Cálculos base transparentes
+                const fiatRecibido = montoUSDT * venta;
+                const usdtRecompradosBrutos = fiatRecibido / precioCompra;
+                
+                // Se divide la comisión total entre las dos operaciones
+                const comisionMitad = comisionTotal / 2;
+                const usdtCobradosVenta = (montoUSDT * comisionMitad) / 100;
+                const usdtCobradosCompra = (usdtRecompradosBrutos * comisionMitad) / 100;
+                
+                const inversionInicialReal = montoUSDT + usdtCobradosVenta;
+                const usdtNetosFinales = usdtRecompradosBrutos - usdtCobradosCompra;
+                
+                const gananciaUSDT = usdtNetosFinales - inversionInicialReal;
+                
+                // Rentabilidad calculada sobre tu capital enviado para evitar distorsiones visuales
+                const rentabilidadReal = (gananciaUSDT / montoUSDT) * 100;
+
+                const colorGanancia = gananciaUSDT > 0 ? `text-${mercado.color}-400` : 'text-rose-500';
+                const signo = gananciaUSDT > 0 ? '+' : '';
+
+                divSimResult.innerHTML = `
+                    <div class="flex justify-between"><span>1. Vendes ${montoUSDT} USDT:</span> <span class="text-white">+ ${mercado.simbolo}${fiatRecibido.toLocaleString('en-US', {minimumFractionDigits: mercado.decimales, maximumFractionDigits: mercado.decimales})}</span></div>
+                    <div class="flex justify-between"><span>2. Recompras a ${precioCompra}:</span> <span class="text-white">${usdtRecompradosBrutos.toFixed(2)} USDT</span></div>
+                    <div class="flex justify-between text-slate-500 mt-1"><span>- Comisiones (${comisionTotal}% total):</span> <span>- ${(usdtCobradosVenta + usdtCobradosCompra).toFixed(2)} USDT</span></div>
+                    <div class="my-1 border-t border-slate-700"></div>
+                    <div class="flex justify-between font-bold ${colorGanancia} text-xs mt-1"><span>GANANCIA NETA:</span> <span>${signo}${gananciaUSDT.toFixed(2)} USDT</span></div>
+                    <div class="flex justify-between ${colorGanancia} text-[9px] mt-0.5 opacity-80"><span>RENTABILIDAD:</span> <span>${signo}${rentabilidadReal.toFixed(2)}%</span></div>
+                `;
+            } else {
+                divSimResult.innerHTML = `<div class="text-center text-slate-600 opacity-60">
+                    <svg class="w-5 h-5 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    Esperando tasa de recompra...
+                </div>`;
+            }
+        }
+
+        function actualizarTodo() {
+            mercados.forEach(m => calcularMercado(m.id));
+        }
+
+        document.addEventListener('DOMContentLoaded', inicializarUI);
+    </script>
+</body>
+</html>
